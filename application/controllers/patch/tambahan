@@ -1,0 +1,33 @@
+private function apply_invoice_filters($keyword, $dari, $sampai)
+{
+    if($keyword){
+        $this->db->group_start();
+        
+        if(strcasecmp($keyword, 'overdue') == 0){
+            // Khusus Overdue: Unpaid DAN sudah lewat tanggal
+            $this->db->where('invoices.status', 'UNPAID');
+            $this->db->where('invoices.due_date <', date('Y-m-d'));
+            $this->db->where('invoices.due_date !=', '0000-00-00');
+        } elseif(strcasecmp($keyword, 'unpaid') == 0){
+            // Khusus Unpaid murni: Unpaid DAN BELUM lewat tanggal
+            $this->db->where('invoices.status', 'UNPAID');
+            $this->db->group_start();
+                $this->db->where('invoices.due_date >=', date('Y-m-d'));
+                $this->db->or_where('invoices.due_date', '0000-00-00');
+                $this->db->or_where('invoices.due_date', NULL);
+            $this->db->group_end();
+        } elseif(strcasecmp($keyword, 'paid') == 0){
+            // Khusus Paid
+            $this->db->where('invoices.status', 'PAID');
+        } else {
+            // Pencarian nama atau nomor invoice
+            $this->db->like('invoices.nomor_invoice', $keyword);
+            $this->db->or_like('customers.nama', $keyword);
+        }
+        
+        $this->db->group_end();
+    }
+
+    if($dari)   $this->db->where('invoices.tanggal >=', $dari);
+    if($sampai) $this->db->where('invoices.tanggal <=', $sampai);
+}

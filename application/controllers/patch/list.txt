@@ -1,0 +1,69 @@
+public function list()
+{
+    $this->load->library('pagination');
+
+    $keyword = trim($this->input->get('keyword'));
+    $dari    = $this->input->get('dari');
+    $sampai  = $this->input->get('sampai');
+
+    // --- LOGIKA FILTER (Sama untuk Count & Ambil Data) ---
+    $this->apply_invoice_filters($keyword, $dari, $sampai);
+
+    $this->db->from('invoices');
+    $this->db->join('customers', 'customers.id = invoices.customer_id', 'left');
+    $config['total_rows'] = $this->db->count_all_results();
+
+    // --- CONFIG PAGINATION ---
+    $config['base_url'] = site_url('invoice/list');
+    $config['reuse_query_string'] = true;
+    $config['per_page'] = 5;
+    $config['uri_segment'] = 3;
+    $config['full_tag_open'] = '<nav><ul class="pagination mt-2 ml-3">';
+    $config['full_tag_close'] = '</ul></nav>';
+    $config['attributes'] = ['class'=>'page-link'];
+    $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+    $config['cur_tag_close'] = '</span></li>';
+    $config['num_tag_open'] = $config['next_tag_open'] = $config['prev_tag_open'] = '<li class="page-item">';
+    $config['num_tag_close'] = $config['next_tag_close'] = $config['prev_tag_close'] = '</li>';
+
+    $this->pagination->initialize($config);
+    $page = $this->uri->segment(3) ? $this->uri->segment(3) : 0;
+
+    // --- AMBIL DATA ---
+    $this->db->select('invoices.*, customers.nama');
+    $this->apply_invoice_filters($keyword, $dari, $sampai);
+    $this->db->from('invoices');
+    $this->db->join('customers', 'customers.id = invoices.customer_id', 'left');
+    $this->db->order_by('invoices.id','DESC');
+    $this->db->limit($config['per_page'], $page);
+
+    $data['invoice'] = $this->db->get()->result();
+    $data['pagination'] = $this->pagination->create_links();
+    $data['keyword'] = $keyword;
+    $data['dari'] = $dari;
+    $data['sampai'] = $sampai;
+
+    $this->load->view('invoice/list', $data);
+}
+
+// Tambahkan fungsi pembantu ini di bawah fungsi list atau di paling bawah class sebelum tanda }
+private function apply_invoice_filters($keyword, $dari, $sampai)
+{
+    if($keyword){
+        $this->db->group_start();
+        if(strcasecmp($keyword, 'overdue') == 0){
+            $this->db->where('invoices.status', 'UNPAID');
+            $this->db->where('invoices.due_date <', date('Y-m-d'));
+            $this->db->where('invoices.due_date !=', '0000-00-00');
+        } elseif(strcasecmp($keyword, 'paid') == 0 || strcasecmp($keyword, 'unpaid') == 0){
+            $this->db->where('invoices.status', strtoupper($keyword));
+        } else {
+            $this->db->like('invoices.nomor_invoice', $keyword);
+            $this->db->or_like('customers.nama', $keyword);
+        }
+        $this->db->group_end();
+    }
+
+    if($dari)   $this->db->where('invoices.tanggal >=', $dari);
+    if($sampai) $this->db->where('invoices.tanggal <=', $sampai);
+}

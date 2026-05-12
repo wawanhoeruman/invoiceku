@@ -1,0 +1,121 @@
+perbaikan function list ()
+if($keyword){
+    $this->db->group_start();
+    
+    // Logika tambahan untuk OVERDUE
+    if(strtolower($keyword) == 'overdue'){
+        $this->db->where('status', 'UNPAID');
+        $this->db->where('due_date <', date('Y-m-d'));
+    } else {
+        $this->db->like('nomor_invoice', $keyword);
+        $this->db->or_like('customers.nama', $keyword);
+        $this->db->or_where('status', strtoupper($keyword));
+    }
+    
+    $this->db->group_end();
+}
+
+
+versibaru;
+if($keyword){
+    $keyword = trim($keyword); // Penting untuk hapus spasi gaib
+    $this->db->group_start();
+    if(strcasecmp($keyword, 'overdue') == 0){
+        $this->db->where('invoices.status', 'UNPAID');
+        $this->db->where('invoices.due_date <', date('Y-m-d'));
+        $this->db->where('invoices.due_date !=', '0000-00-00');
+    } else {
+        $this->db->like('invoices.nomor_invoice', $keyword);
+        $this->db->or_like('customers.nama', $keyword);
+        $this->db->or_where('invoices.status', strtoupper($keyword));
+    }
+    $this->db->group_end();
+}
+
+
+
+
+perbaikan fungction export ()
+if($keyword){
+    $this->db->group_start();
+    if(strtolower($keyword) == 'overdue'){
+        $this->db->where('status', 'UNPAID');
+        $this->db->where('due_date <', date('Y-m-d'));
+    } else {
+        $this->db->like('nomor_invoice', $keyword);
+        $this->db->or_like('customers.nama', $keyword);
+        $this->db->or_where('status', strtoupper($keyword));
+    }
+    $this->db->group_end();
+}
+
+
+
+
+========================
+list()
+if($keyword){
+        $keyword = trim($keyword); // Menghapus spasi jika ada
+        $this->db->group_start();
+        if(strcasecmp($keyword, 'overdue') == 0){
+            $this->db->where('invoices.status', 'UNPAID');
+            $this->db->where('invoices.due_date <', date('Y-m-d'));
+            $this->db->where('invoices.due_date !=', '0000-00-00');
+        } else {
+            $this->db->like('invoices.nomor_invoice', $keyword);
+            $this->db->or_like('customers.nama', $keyword);
+            $this->db->or_where('invoices.status', strtoupper($keyword));
+        }
+        $this->db->group_end();
+    }
+
+
+
+
+
+
+export()
+if($keyword){
+        $keyword = trim($keyword);
+        $this->db->group_start();
+        if(strcasecmp($keyword, 'overdue') == 0){
+            $this->db->where('invoices.status', 'UNPAID');
+            $this->db->where('invoices.due_date <', date('Y-m-d'));
+            $this->db->where('invoices.due_date !=', '0000-00-00');
+        } else {
+            $this->db->like('invoices.nomor_invoice', $keyword);
+            $this->db->or_like('customers.nama', $keyword);
+            $this->db->or_where('invoices.status', strtoupper($keyword));
+        }
+        $this->db->group_end();
+    }
+
+
+
+
+
+
+
+
+
+
+end
+if($keyword){
+    $keyword = trim($keyword);
+    $this->db->group_start();
+    
+    // Gunakan strcasecmp agar 'overdue' atau 'OVERDUE' sama saja
+    if(strcasecmp($keyword, 'overdue') == 0){
+        // Kita sebutkan nama tabelnya: invoices.status dan invoices.due_date
+        $this->db->where('invoices.status', 'UNPAID');
+        $this->db->where('invoices.due_date <', date('Y-m-d'));
+        $this->db->where('invoices.due_date !=', '0000-00-00');
+        $this->db->where('invoices.due_date IS NOT NULL');
+    } else {
+        $this->db->like('invoices.nomor_invoice', $keyword);
+        $this->db->or_like('customers.nama', $keyword);
+        $this->db->or_where('invoices.status', strtoupper($keyword));
+    }
+    
+    $this->db->group_end();
+}
