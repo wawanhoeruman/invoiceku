@@ -92,11 +92,39 @@ Features:
 
 ---
 
+### Customer Management
+
+![Customers](screenshots/customers.png)
+
+---
+
+### Customer List
+
+![Customer List](screenshots/customer-list.png)
+
+---
+
 ### Invoice Management
 
 ![Invoice](screenshots/invoice.png)
 
 ---
+
+### Invoice List
+
+![Invoice List](screenshots/invoice-list.png)
+
+---
+
+### Invoice Detail
+
+![Invoice Detail](screenshots/invoice-detail.png)
+
+---
+
+### Invoice PDF
+
+![Invoice PDF](screenshots/invoice-pdf.png)
 
 ### User Management
 
