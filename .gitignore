@@ -75,8 +75,11 @@ composer.lock
 # ======================
 *.pdf
 *.zip
-*.sql
 *.tmp
+
+# Ignore all SQL except sample database
+*.sql
+!database/invoiceku.sql
 
 # ======================
 # APACHE
