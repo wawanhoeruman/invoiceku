@@ -95,7 +95,7 @@ Features:
 
 ![User Management](screenshots/user-management.png)
 
---
+---
 
 ### User List
 
