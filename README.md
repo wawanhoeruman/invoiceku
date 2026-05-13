@@ -91,6 +91,17 @@ Features:
 ![Dashboard](screenshots/dashboard.png)
 
 ---
+### User Management
+
+![User Management](screenshots/user-management.png)
+
+--
+
+### User Management
+
+![User List](screenshots/user-list.png)
+
+---
 
 ### Customer Management
 
@@ -128,7 +139,7 @@ Features:
 
 ### User Management
 
-![User Management](screenshots/user-management.png)
+###![User Management](screenshots/user-management.png)
 
 ---
 
