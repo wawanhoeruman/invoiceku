@@ -97,7 +97,7 @@ Features:
 
 --
 
-### User Management
+### User List
 
 ![User List](screenshots/user-list.png)
 
@@ -136,10 +136,6 @@ Features:
 ### Invoice PDF
 
 ![Invoice PDF](screenshots/invoice-pdf.png)
-
-### User Management
-
-###![User Management](screenshots/user-management.png)
 
 ---
 
