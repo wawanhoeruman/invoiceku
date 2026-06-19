@@ -27,7 +27,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <p class="text-muted">Semua data user</p>
 
 <!-- NAV BUTTON -->
-<a href="<?= site_url('user') ?>" class="btn btn-secondary btn-sm">← Menu</a>
+<a href="<?= site_url('user') ?>" class="btn btn-secondary btn-sm">← Back</a>
 <a href="<?= site_url('dashboard') ?>" class="btn btn-dark btn-sm">Dashboard</a>
 <a href="<?= site_url('user/tambah') ?>" class="btn btn-primary btn-sm">
 + Tambah User

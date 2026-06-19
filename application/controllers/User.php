@@ -125,7 +125,7 @@ public function list()
 // 🔥 LOG
 log_activity('CREATE', 'Menambah user: ' . $nama);
 
-redirect('user');
+redirect('user/list');
 }
 
     public function edit($id)
@@ -166,7 +166,7 @@ $this->db->update('users', $data);
 // 🔥 LOG
 log_activity('UPDATE', 'Update user: ' . $nama);
 
-redirect('user');
+redirect('user/list');
 }
 
 public function delete($id)
@@ -194,7 +194,7 @@ log_activity('DELETE', 'Hapus user: ' . $user->nama);
 $this->db->where('id', $id);
 $this->db->delete('users');
 
-redirect('user');
+redirect('user/list');
 }
 
 }
