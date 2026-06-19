@@ -145,14 +145,18 @@ Search
 <th width="120">Jatuh Tempo</th>
 <th width="120">Status</th>
 <th width="150">Total</th>
-<th width="180">Aksi</th>
+<th width="180">Abits</th>
 </tr>
 
+<?php 
+// Kita siapkan penampung nomor halaman (nanti diisi lewat JavaScript di bawah)
+?>
 <?php $no=1; foreach($invoice as $i){ ?>
 
-<tr>
+<tr class="invoice-row">
 
-<td><?= $no++ ?></td>
+<!-- Beri class target-no agar bisa ditembak angkanya lewat script -->
+<td class="target-no"><?= $no++ ?></td>
 
 <td>
 <strong><?= $i->nomor_invoice ?></strong>
@@ -238,13 +242,18 @@ Locked
 
 </table>
 
-<!-- <div style="padding:8px 15px;">
-<?= $pagination; ?>
-</div> -->
 <div class="d-flex justify-content-between align-items-center p-3">
 
-<div>
-<?= $pagination ?>
+<div class="d-flex align-items-center" id="pagination-wrapper">
+    <!-- Tombol Pagination -->
+    <div class="mr-3">
+        <?= $pagination ?>
+    </div>
+    
+    <!-- Informasi Urutan Baris Data yang Sedang Tampil -->
+    <span class="badge badge-secondary p-2" id="showing-text" style="font-size: 13px;">
+        Showing Baris: 1 - <?= count($invoice) ?>
+    </span>
 </div>
 
 <div>
@@ -265,6 +274,40 @@ class="btn btn-success btn-sm"
 </div>
 
 </div>
+
+<!-- JAVASCRIPT OTOMATIS HITUNG NOMOR BARIS -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Cari tombol halaman yang sedang aktif di pagination CodeIgniter kamu
+    // Biasanya menggunakan class 'active' atau tag <strong> bawaan CI
+    let activePageElement = document.querySelector('#pagination-wrapper .active, #pagination-wrapper strong, #pagination-wrapper .page-item.active a');
+    
+    let currentPage = 1;
+    if (activePageElement) {
+        let pageText = activePageElement.innerText.trim();
+        if (!isNaN(pageText) && pageText !== "") {
+            currentPage = parseInt(pageText);
+        }
+    }
+
+    // 2. Tentukan limit baris data kamu (yaitu 5)
+    let limit = 5;
+    let startNo = ((currentPage - 1) * limit) + 1;
+
+    // 3. Update Kolom Nomor di Tabel secara paksa lewat Browser
+    let rows = document.querySelectorAll('.target-no');
+    rows.forEach(function(row, index) {
+        row.innerText = startNo + index;
+    });
+
+    // 4. Update Teks "Showing Baris: X - Y" di bawah samping tombol Next
+    let showingText = document.getElementById('showing-text');
+    if (showingText && rows.length > 0) {
+        let endNo = startNo + rows.length - 1;
+        showingText.innerText = "Showing Baris: " + startNo + " - " + endNo;
+    }
+});
+</script>
 
 </body>
 </html>
