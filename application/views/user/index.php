@@ -59,6 +59,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <th width="5%">No</th>
     <th>Nama</th>
     <th>Username</th>
+    <th>Email</th> <!-- 🔥 1. TAMBAH HEADER EMAIL -->
     <th>Role</th>
     <th width="20%">Aksi</th>
 </tr>
@@ -67,11 +68,18 @@ href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <tbody>
 
 <?php if(!empty($users)): ?>
-    <?php $no=1; foreach($users as $u): ?>
+    <?php 
+    // Mengambil segment baris halaman dari URL, kalau kosong (halaman 1) default ke 0
+    $start = $this->uri->segment(3) ? $this->uri->segment(3) : 0;
+    $no = $start + 1; 
+    
+    foreach($users as $u): 
+    ?>
     <tr>
         <td><?= $no++ ?></td>
         <td><?= $u->nama ?></td>
         <td><?= $u->username ?></td>
+        <td><?= $u->email ?></td> <!-- 🔥 2. TAMPILKAN DATA EMAIL -->
         <td>
             <?php if($u->role == 'admin'): ?>
                 <span class="badge badge-success">Admin</span>
@@ -100,7 +108,8 @@ href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <?php endforeach; ?>
 <?php else: ?>
 <tr>
-    <td colspan="5" class="text-center text-muted">
+    <!-- 🔥 3. UBAH COLSPAN JADI 6 BIAR PAS SAMA JUMLAH KOLOM BARU -->
+    <td colspan="6" class="text-center text-muted">
         Belum ada data user
     </td>
 </tr>

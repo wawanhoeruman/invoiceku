@@ -32,6 +32,12 @@ href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
            class="form-control" required>
 </div>
 
+<!-- baru -->
+ <div class="form-group">
+    <label>Email</label>
+    <input type="email" name="email" class="form-control" value="<?= $user->email; ?>" required>
+</div>
+
 <div class="form-group">
     <label>Password (kosongkan jika tidak diubah)</label>
     <input type="password" name="password"

@@ -99,10 +99,41 @@ public function list()
     $this->load->view('user/tambah');
 }
 
-    public function simpan()
+//     public function simpan()
+// {
+//     $nama     = $this->input->post('nama');
+//     $username = $this->input->post('username');
+//     $password = $this->input->post('password');
+//     $role     = $this->input->post('role');
+
+//     // 🔐 HASH PASSWORD
+//     $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+//     $data = [
+//         'nama'     => $nama,
+//         'username' => $username,
+//         'password' => $password_hash,
+//         'role'     => $role,
+//         'created_at' => date('Y-m-d H:i:s')
+//     ];
+
+//     // $this->db->insert('users', $data);
+
+//     // redirect('user');
+//     $this->db->insert('users', $data);
+
+// // 🔥 LOG
+// log_activity('CREATE', 'Menambah user: ' . $nama);
+
+// redirect('user/list');
+// }
+
+// baru
+public function simpan()
 {
     $nama     = $this->input->post('nama');
     $username = $this->input->post('username');
+    $email    = trim($this->input->post('email')); // 🔥 1. TANGKAP INPUTAN EMAIL DI SINI
     $password = $this->input->post('password');
     $role     = $this->input->post('role');
 
@@ -110,22 +141,20 @@ public function list()
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
     $data = [
-        'nama'     => $nama,
-        'username' => $username,
-        'password' => $password_hash,
-        'role'     => $role,
+        'nama'       => $nama,
+        'username'   => $username,
+        'email'      => $email, // 🔥 2. MASUKKAN EMAIL KE ARRAY DATABASE
+        'password'   => $password_hash,
+        'role'       => $role,
         'created_at' => date('Y-m-d H:i:s')
     ];
 
-    // $this->db->insert('users', $data);
-
-    // redirect('user');
     $this->db->insert('users', $data);
 
-// 🔥 LOG
-log_activity('CREATE', 'Menambah user: ' . $nama);
+    // 🔥 LOG
+    log_activity('CREATE', 'Menambah user: ' . $nama);
 
-redirect('user/list');
+    redirect('user/list');
 }
 
     public function edit($id)
@@ -137,17 +166,53 @@ redirect('user/list');
     $this->load->view('user/edit', $data);
 }
 
-    public function update()
+//     public function update()
+// {
+//     $id       = $this->input->post('id');
+//     $nama     = $this->input->post('nama');
+//     $username = $this->input->post('username');
+//     $password = $this->input->post('password');
+//     $role     = $this->input->post('role');
+
+//     $data = [
+//         'nama'     => $nama,
+//         'username' => $username,
+//         'role'     => $role
+//     ];
+
+//     // 🔥 kalau password diisi → update
+//     if(!empty($password)){
+//         $data['password'] = password_hash($password, PASSWORD_DEFAULT);
+//     }
+
+//     // $this->db->where('id', $id);
+//     // $this->db->update('users', $data);
+
+//     // redirect('user');
+//     $this->db->where('id', $id);
+// $this->db->update('users', $data);
+
+// // 🔥 LOG
+// log_activity('UPDATE', 'Update user: ' . $nama);
+
+// redirect('user/list');
+// }
+
+// baru
+
+public function update()
 {
     $id       = $this->input->post('id');
     $nama     = $this->input->post('nama');
     $username = $this->input->post('username');
+    $email    = trim($this->input->post('email')); // 🔥 1. TANGKAP INPUTAN EMAIL BARU
     $password = $this->input->post('password');
     $role     = $this->input->post('role');
 
     $data = [
         'nama'     => $nama,
         'username' => $username,
+        'email'    => $email, // 🔥 2. MASUKKAN EMAIL KE ARRAY UPDATE
         'role'     => $role
     ];
 
@@ -156,17 +221,13 @@ redirect('user/list');
         $data['password'] = password_hash($password, PASSWORD_DEFAULT);
     }
 
-    // $this->db->where('id', $id);
-    // $this->db->update('users', $data);
-
-    // redirect('user');
     $this->db->where('id', $id);
-$this->db->update('users', $data);
+    $this->db->update('users', $data);
 
-// 🔥 LOG
-log_activity('UPDATE', 'Update user: ' . $nama);
+    // 🔥 LOG
+    log_activity('UPDATE', 'Update user: ' . $nama);
 
-redirect('user/list');
+    redirect('user/list');
 }
 
 public function delete($id)

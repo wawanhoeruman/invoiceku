@@ -51,4 +51,27 @@ else
         $this->session->sess_destroy();
         redirect('auth');
     }
+
+public function forgot_password()
+    {
+        $email = trim($this->input->post('email'));
+
+        if (empty($email)) {
+            // Kita panggil file login, tapi kita selipkan variabel $mode = 'forgot'
+            $data['mode'] = 'forgot';
+            $this->load->view('login', $data);
+        } else {
+            $user = $this->db->get_where('users', ['email' => $email])->row();
+
+            if ($user) {
+                // TODO: Logic kirim email di sini
+                $this->session->set_flashdata('success', 'Link reset password telah dikirim ke email Anda!');
+                redirect('auth/forgot_password');
+            } else {
+                $this->session->set_flashdata('error', 'Email tidak terdaftar!');
+                redirect('auth/forgot_password');
+            }
+        }
+    }    
+
 }
