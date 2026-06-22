@@ -33,8 +33,14 @@ body{
     vertical-align:middle;
 }
 
-.pagination{
-    margin-bottom:0;
+/* 🌟 PAKSA PAGINATION CI AGAR BERGAYA FLEX DAN SEJAJAR TENGAH */
+.custom-pagination-container nav, 
+.custom-pagination-container ul.pagination {
+    display: flex !important;
+    align-items: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
 }
 
 </style>
@@ -109,7 +115,7 @@ Reset
 <table class="table table-bordered table-hover mb-0">
 
 <tr>
-<th width="70">ID</th>
+<th width="70">No</th>
 <th>Nama</th>
 <th>Telepon</th>
 <th>Email</th>
@@ -117,11 +123,14 @@ Reset
 <th width="150">Aksi</th>
 </tr>
 
-<?php foreach($customer as $c){ ?>
+<?php 
+$no = $page + 1; 
+foreach($customer as $c){ 
+?>
 
 <tr>
 
-<td><?= $c->id; ?></td>
+<td><?= $no++; ?></td>
 <td><?= $c->nama; ?></td>
 <td><?= $c->telepon; ?></td>
 <td><?= $c->email; ?></td>
@@ -150,11 +159,20 @@ Hapus
 
 </div>
 
-<div class="mt-3">
-<?= $paging; ?>
+<!-- 🌟 BAGIAN PAGINATION DAN KOTAK HITAM DIJAMIN SATU BARIS LURUS SEJAJAR -->
+<div class="d-flex align-items-center mt-3 custom-pagination-container" style="gap: 15px;">
+    
+    <!-- Bagian Angka Pagination -->
+    <div>
+        <?= $paging; ?>
+    </div>
+    
+    <!-- Kotak Hitam (Badge Dark) Menempel Sempurna Sejajar Di Samping Tombol Next -->
+    <span class="badge badge-dark p-2" style="font-size: 13px; font-weight: normal; border-radius: 4px; white-space: nowrap; line-height: 1.5;">
+        Showing <?= ($total_rows > 0) ? ($page + 1) : 0; ?> to <?= min($page + $per_page, $total_rows); ?> of <?= $total_rows; ?> entries
+    </span>
+
 </div>
-
-
 
 </div>
 

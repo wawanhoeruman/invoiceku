@@ -35,10 +35,72 @@ class Customer extends CI_Controller {
         $this->load->view('customer/index', $data);
     }
 
-    /* =========================
-       LIST CUSTOMER
-    ========================== */
-    public function list()
+  
+    //    public function list()
+    // {
+    //     $keyword = $this->input->get('keyword');
+
+    //     if($keyword){
+    //         $this->db->group_start();
+    //         $this->db->like('nama', $keyword);
+    //         $this->db->or_like('telepon', $keyword);
+    //         $this->db->or_like('email', $keyword);
+    //         $this->db->group_end();
+    //     }
+
+    //     $total = $this->db->count_all_results('customers', false);
+
+    //     $config['base_url'] = site_url('customer/list');
+    //     $config['reuse_query_string'] = true;
+    //     $config['total_rows'] = $total;
+    //     $config['per_page'] = 5;
+    //     $config['uri_segment'] = 3;
+
+    //     $config['full_tag_open'] =
+    //     '<nav><ul class="pagination mt-3">';
+    //     $config['full_tag_close'] = '</ul></nav>';
+
+    //     $config['first_link'] = false;
+    //     $config['last_link']  = false;
+
+    //     $config['prev_link'] = 'Prev';
+    //     $config['next_link'] = 'Next';
+
+    //     $config['prev_tag_open'] = '<li class="page-item">';
+    //     $config['prev_tag_close'] = '</li>';
+
+    //     $config['next_tag_open'] = '<li class="page-item">';
+    //     $config['next_tag_close'] = '</li>';
+
+    //     $config['num_tag_open'] = '<li class="page-item">';
+    //     $config['num_tag_close'] = '</li>';
+
+    //     $config['cur_tag_open'] =
+    //     '<li class="page-item active"><span class="page-link">';
+    //     $config['cur_tag_close'] =
+    //     '</span></li>';
+
+    //     $config['attributes'] =
+    //     ['class'=>'page-link'];
+
+    //     $this->pagination->initialize($config);
+
+    //     $page = $this->uri->segment(3);
+    //     if(!$page) $page = 0;
+
+    //     $this->db->limit($config['per_page'], $page);
+
+    //     $data['customer'] =
+    //         $this->db->get()->result();
+
+    //     $data['keyword'] = $keyword;
+    //     $data['paging'] =
+    //         $this->pagination->create_links();
+
+    //     $this->load->view('customer/list', $data);
+    // }
+
+public function list()
     {
         $keyword = $this->input->get('keyword');
 
@@ -58,8 +120,7 @@ class Customer extends CI_Controller {
         $config['per_page'] = 5;
         $config['uri_segment'] = 3;
 
-        $config['full_tag_open'] =
-        '<nav><ul class="pagination mt-3">';
+        $config['full_tag_open'] = '<nav><ul class="pagination mt-3">';
         $config['full_tag_close'] = '</ul></nav>';
 
         $config['first_link'] = false;
@@ -77,13 +138,10 @@ class Customer extends CI_Controller {
         $config['num_tag_open'] = '<li class="page-item">';
         $config['num_tag_close'] = '</li>';
 
-        $config['cur_tag_open'] =
-        '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close'] =
-        '</span></li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close'] = '</span></li>';
 
-        $config['attributes'] =
-        ['class'=>'page-link'];
+        $config['attributes'] = ['class'=>'page-link'];
 
         $this->pagination->initialize($config);
 
@@ -92,15 +150,19 @@ class Customer extends CI_Controller {
 
         $this->db->limit($config['per_page'], $page);
 
-        $data['customer'] =
-            $this->db->get()->result();
+        $data['customer'] = $this->db->get()->result();
+
+        // Data tambahan wajib untuk view baru agar tidak Undefined Variable
+        $data['page']       = $page; 
+        $data['total_rows'] = $total;
+        $data['per_page']   = $config['per_page'];
 
         $data['keyword'] = $keyword;
-        $data['paging'] =
-            $this->pagination->create_links();
+        $data['paging'] = $this->pagination->create_links();
 
         $this->load->view('customer/list', $data);
     }
+
 
     public function tambah()
     {
@@ -124,6 +186,8 @@ class Customer extends CI_Controller {
 
         redirect('customer/list');
     }
+
+
 
 //versilama
 // public function hapus($id)

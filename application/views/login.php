@@ -54,7 +54,15 @@
                 <div class="card-header">
                     <div class="logo">🧾</div>
                     <!-- Judul dinamis tergantung halaman -->
-                    <?= (isset($mode) && $mode == 'forgot') ? 'Reset Password' : 'Login Admin'; ?>
+                    <?php 
+                        if(isset($mode) && $mode == 'forgot'){
+                            echo 'Reset Password';
+                        } elseif(isset($mode) && $mode == 'change'){
+                            echo 'Password Baru';
+                        } else {
+                            echo 'Login Admin';
+                        }
+                    ?>
                 </div>
 
                 <div class="card-body">
@@ -91,6 +99,21 @@
                         <div class="text-center mt-3">
                             <a href="<?= site_url('auth'); ?>" style="color: #667eea; text-decoration: none; font-size: 14px;">← Kembali ke Login</a>
                         </div>
+
+                    <?php } elseif(isset($mode) && $mode == 'change') { ?>
+
+                        <!-- ==================== 🌟 FORM GANTI PASSWORD BARU 🌟 ==================== -->
+                        <p class="text-muted text-center small">Masukkan password baru untuk akun:<br><strong><?= $email; ?></strong></p>
+                        <form method="post" action="<?= site_url('auth/resetpassword?email=' . $email) ?>">
+                            <div class="form-group">
+                                <label>Password Baru</label>
+                                <input type="password" name="password_baru" class="form-control" placeholder="Minimal 6 karakter..." required autofocus>
+                            </div>
+
+                            <button type="submit" class="btn btn-success btn-block btn-login text-white">
+                                Simpan Password Baru
+                            </button>
+                        </form>
 
                     <?php } else { ?>
 

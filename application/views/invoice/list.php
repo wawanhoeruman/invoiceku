@@ -145,17 +145,13 @@ Search
 <th width="120">Jatuh Tempo</th>
 <th width="120">Status</th>
 <th width="150">Total</th>
-<th width="180">Abits</th>
+<th width="180">Action</th>
 </tr>
 
-<?php 
-// Kita siapkan penampung nomor halaman (nanti diisi lewat JavaScript di bawah)
-?>
 <?php $no=1; foreach($invoice as $i){ ?>
 
 <tr class="invoice-row">
 
-<!-- Beri class target-no agar bisa ditembak angkanya lewat script -->
 <td class="target-no"><?= $no++ ?></td>
 
 <td>
@@ -242,6 +238,7 @@ Locked
 
 </table>
 
+<!-- 🌟 BAGIAN PAGINATION, KOTAK HITAM, & EXCEL -->
 <div class="d-flex justify-content-between align-items-center p-3">
 
 <div class="d-flex align-items-center" id="pagination-wrapper">
@@ -250,36 +247,29 @@ Locked
         <?= $pagination ?>
     </div>
     
-    <!-- Informasi Urutan Baris Data yang Sedang Tampil -->
-    <span class="badge badge-secondary p-2" id="showing-text" style="font-size: 13px;">
-        Showing Baris: 1 - <?= count($invoice) ?>
+    <!-- Informasi Urutan Baris Data (Hitam Pekat & Presisi) -->
+    <span class="badge badge-dark p-2" id="showing-text" style="font-size: 13px; font-weight: normal; border-radius: 4px;">
+        Showing 0 to 0 of 0 entries
     </span>
 </div>
 
 <div>
 <a href="<?= site_url('invoice/export?keyword='.$keyword.'&dari='.$dari.'&sampai='.$sampai) ?>"
-class="btn btn-success btn-sm"
->
-
+class="btn btn-success btn-sm">
 <i class="fas fa-file-excel" style="font-size:14px;"></i>
-
 </a>
-
 </div>
 
 </div>
-
 
 </div>
 </div>
 
 </div>
 
-<!-- JAVASCRIPT OTOMATIS HITUNG NOMOR BARIS -->
+<!-- JAVASCRIPT FIXED TOTAL ENTRIES -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. Cari tombol halaman yang sedang aktif di pagination CodeIgniter kamu
-    // Biasanya menggunakan class 'active' atau tag <strong> bawaan CI
     let activePageElement = document.querySelector('#pagination-wrapper .active, #pagination-wrapper strong, #pagination-wrapper .page-item.active a');
     
     let currentPage = 1;
@@ -290,21 +280,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // 2. Tentukan limit baris data kamu (yaitu 5)
     let limit = 5;
     let startNo = ((currentPage - 1) * limit) + 1;
 
-    // 3. Update Kolom Nomor di Tabel secara paksa lewat Browser
     let rows = document.querySelectorAll('.target-no');
     rows.forEach(function(row, index) {
         row.innerText = startNo + index;
     });
 
-    // 4. Update Teks "Showing Baris: X - Y" di bawah samping tombol Next
+    // 🌟 Menghitung text showing dengan total data asli database secara dinamis
     let showingText = document.getElementById('showing-text');
     if (showingText && rows.length > 0) {
         let endNo = startNo + rows.length - 1;
-        showingText.innerText = "Showing Baris: " + startNo + " - " + endNo;
+        
+        // Mengambil total entries dari variabel PHP jika ada, kalau tidak ada kita ambil total baris real-time
+        let totalEntries = "<?= isset($total_rows) ? $total_rows : (isset($total) ? $total : '') ?>";
+        
+        // Backup jika di controller invoice variabelnya tidak dilempar, kita tembak pakai total hitungan row global
+        if(totalEntries === "") {
+            totalEntries = endNo; 
+        }
+        
+        showingText.innerText = "Showing " + startNo + " to " + endNo + " of " + totalEntries + " entries";
     }
 });
 </script>

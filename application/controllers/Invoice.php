@@ -352,6 +352,127 @@ public function update_item()
 // }
 
 
+// list versi lama
+
+// public function list()
+// {
+//     $this->load->library('pagination');
+
+//     $keyword = $this->input->get('keyword');
+//     $dari    = $this->input->get('dari');
+//     $sampai  = $this->input->get('sampai');
+
+//     /* COUNT DATA */
+//     $this->db->select('invoices.id');
+//     $this->db->from('invoices');
+//     $this->db->join('customers', 'customers.id = invoices.customer_id', 'left');
+
+//     // if($keyword){
+//     //     $this->db->group_start();
+//     //     $this->db->like('nomor_invoice', $keyword);
+//     //     $this->db->or_like('customers.nama', $keyword);
+//     //     $this->db->or_where('status', strtoupper($keyword));
+//     //     $this->db->group_end();
+//     // }
+// if($keyword){
+//     $keyword = trim($keyword);
+//     $this->db->group_start();
+    
+//     // Gunakan strcasecmp agar 'overdue' atau 'OVERDUE' sama saja
+//     if(strcasecmp($keyword, 'overdue') == 0){
+//         // Kita sebutkan nama tabelnya: invoices.status dan invoices.due_date
+//         $this->db->where('invoices.status', 'UNPAID');
+//         $this->db->where('invoices.due_date <', date('Y-m-d'));
+//         $this->db->where('invoices.due_date !=', '0000-00-00');
+//         $this->db->where('invoices.due_date IS NOT NULL');
+//     } else {
+//         $this->db->like('invoices.nomor_invoice', $keyword);
+//         $this->db->or_like('customers.nama', $keyword);
+//         $this->db->or_where('invoices.status', strtoupper($keyword));
+//     }
+    
+//     $this->db->group_end();
+// }
+
+//     if($dari){
+//         $this->db->where('tanggal >=', $dari);
+//     }
+
+//     if($sampai){
+//         $this->db->where('tanggal <=', $sampai);
+//     }
+
+//     $config['total_rows'] = $this->db->count_all_results();
+
+//     $config['base_url'] = site_url('invoice/list');
+//     $config['reuse_query_string'] = true;
+//     $config['per_page'] = 5;
+//     $config['uri_segment'] = 3;
+
+//     $config['full_tag_open'] =
+//     '<nav><ul class="pagination mt-2 ml-3">';
+//     $config['full_tag_close'] = '</ul></nav>';
+
+//     $config['first_link'] = false;
+//     $config['last_link']  = false;
+
+//     $config['prev_link'] = 'Prev';
+//     $config['next_link'] = 'Next';
+
+//     $config['prev_tag_open'] = '<li class="page-item">';
+//     $config['prev_tag_close'] = '</li>';
+
+//     $config['next_tag_open'] = '<li class="page-item">';
+//     $config['next_tag_close'] = '</li>';
+
+//     $config['num_tag_open'] = '<li class="page-item">';
+//     $config['num_tag_close'] = '</li>';
+
+//     $config['cur_tag_open'] =
+//     '<li class="page-item active"><span class="page-link">';
+//     $config['cur_tag_close'] = '</span></li>';
+
+//     $config['attributes'] = ['class'=>'page-link'];
+
+//     $this->pagination->initialize($config);
+
+//     $page = $this->uri->segment(3);
+//     if(!$page) $page = 0;
+
+//     /* DATA */
+//     $this->db->select('invoices.*, customers.nama');
+//     $this->db->from('invoices');
+//     $this->db->join('customers', 'customers.id = invoices.customer_id', 'left');
+
+//     if($keyword){
+//         $this->db->group_start();
+//         $this->db->like('nomor_invoice', $keyword);
+//         $this->db->or_like('customers.nama', $keyword);
+//         $this->db->or_where('status', strtoupper($keyword));
+//         $this->db->group_end();
+//     }
+
+//     if($dari){
+//         $this->db->where('tanggal >=', $dari);
+//     }
+
+//     if($sampai){
+//         $this->db->where('tanggal <=', $sampai);
+//     }
+
+//     $this->db->order_by('invoices.id','DESC');
+//     $this->db->limit($config['per_page'], $page);
+
+//     $data['invoice'] = $this->db->get()->result();
+//     $data['pagination'] = $this->pagination->create_links();
+
+//     $data['keyword'] = $keyword;
+//     $data['dari'] = $dari;
+//     $data['sampai'] = $sampai;
+
+//     $this->load->view('invoice/list', $data);
+// }
+
 public function list()
 {
     $this->load->library('pagination');
@@ -365,32 +486,23 @@ public function list()
     $this->db->from('invoices');
     $this->db->join('customers', 'customers.id = invoices.customer_id', 'left');
 
-    // if($keyword){
-    //     $this->db->group_start();
-    //     $this->db->like('nomor_invoice', $keyword);
-    //     $this->db->or_like('customers.nama', $keyword);
-    //     $this->db->or_where('status', strtoupper($keyword));
-    //     $this->db->group_end();
-    // }
-if($keyword){
-    $keyword = trim($keyword);
-    $this->db->group_start();
-    
-    // Gunakan strcasecmp agar 'overdue' atau 'OVERDUE' sama saja
-    if(strcasecmp($keyword, 'overdue') == 0){
-        // Kita sebutkan nama tabelnya: invoices.status dan invoices.due_date
-        $this->db->where('invoices.status', 'UNPAID');
-        $this->db->where('invoices.due_date <', date('Y-m-d'));
-        $this->db->where('invoices.due_date !=', '0000-00-00');
-        $this->db->where('invoices.due_date IS NOT NULL');
-    } else {
-        $this->db->like('invoices.nomor_invoice', $keyword);
-        $this->db->or_like('customers.nama', $keyword);
-        $this->db->or_where('invoices.status', strtoupper($keyword));
+    if($keyword){
+        $keyword = trim($keyword);
+        $this->db->group_start();
+        
+        if(strcasecmp($keyword, 'overdue') == 0){
+            $this->db->where('invoices.status', 'UNPAID');
+            $this->db->where('invoices.due_date <', date('Y-m-d'));
+            $this->db->where('invoices.due_date !=', '0000-00-00');
+            $this->db->where('invoices.due_date IS NOT NULL');
+        } else {
+            $this->db->like('invoices.nomor_invoice', $keyword);
+            $this->db->or_like('customers.nama', $keyword);
+            $this->db->or_where('invoices.status', strtoupper($keyword));
+        }
+        
+        $this->db->group_end();
     }
-    
-    $this->db->group_end();
-}
 
     if($dari){
         $this->db->where('tanggal >=', $dari);
@@ -404,11 +516,10 @@ if($keyword){
 
     $config['base_url'] = site_url('invoice/list');
     $config['reuse_query_string'] = true;
-    $config['per_page'] = 5;
+    $config['per_page'] = 8;
     $config['uri_segment'] = 3;
 
-    $config['full_tag_open'] =
-    '<nav><ul class="pagination mt-2 ml-3">';
+    $config['full_tag_open'] = '<nav><ul class="pagination mt-2 ml-3">';
     $config['full_tag_close'] = '</ul></nav>';
 
     $config['first_link'] = false;
@@ -426,8 +537,7 @@ if($keyword){
     $config['num_tag_open'] = '<li class="page-item">';
     $config['num_tag_close'] = '</li>';
 
-    $config['cur_tag_open'] =
-    '<li class="page-item active"><span class="page-link">';
+    $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
     $config['cur_tag_close'] = '</span></li>';
 
     $config['attributes'] = ['class'=>'page-link'];
@@ -463,6 +573,11 @@ if($keyword){
 
     $data['invoice'] = $this->db->get()->result();
     $data['pagination'] = $this->pagination->create_links();
+
+    // 🌟 DATA TAMBAHAN BIAR JAVASCRIPT AMBIL TOTAL DATA ASLI DARI DATABASE
+    $data['total_rows'] = $config['total_rows'];
+    $data['per_page']   = $config['per_page'];
+    $data['page']       = $page;
 
     $data['keyword'] = $keyword;
     $data['dari'] = $dari;
