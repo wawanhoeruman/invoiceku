@@ -85,20 +85,26 @@ Features:
 ![Login](screenshots/login.png)
 
 ---
-### Login Page
+### Reset Password
 
-![Reset Password](screenshots/resetpsswd.png)
+![Reset Password](screenshots/resetpsswd.png)   
 
 ---
-
 ### Dashboard
 
 ![Dashboard](screenshots/dashboard.png)
 
 ---
+
 ### User Management
 
 ![User Management](screenshots/user-management.png)
+
+---
+
+### Add User
+
+![Add User](screenshots/tambah-user.png)
 
 ---
 
@@ -111,6 +117,12 @@ Features:
 ### Customer Management
 
 ![Customers](screenshots/customers.png)
+
+---
+
+### Add Customer
+
+![Add Customer](screenshots/tambah-customers.png)
 
 ---
 
@@ -132,7 +144,13 @@ Features:
 
 ---
 
-### Invoice Detail
+### Create Invoice
+
+![Create Invoice](screenshots/create-invoice.png)
+
+---
+
+### Invoice Detail Create
 
 ![Invoice Detail](screenshots/invoice-detail.png)
 
