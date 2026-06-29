@@ -52,6 +52,7 @@ else
         redirect('auth');
     }
 
+    
 // versilama
 // public function forgot_password()
 //     {
@@ -75,6 +76,8 @@ else
 //         }
 //     } 
 
+
+// forget psswd
 public function forgot_password()
 {
     $email_tujuan = trim($this->input->post('email'));
@@ -143,7 +146,7 @@ $config = [
                 die;
             }
 
-        } else {
+        } else{
             // Jika email tidak terdaftar di database
             $this->session->set_flashdata('error', 'Email tidak terdaftar!');
             redirect('auth/forgot_password');
@@ -151,6 +154,7 @@ $config = [
     }
 }
 
+// reset password 
 public function resetpassword()
 {
     $email = $this->input->get('email');

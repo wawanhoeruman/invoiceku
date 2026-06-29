@@ -35,7 +35,7 @@ class Customer extends CI_Controller {
         $this->load->view('customer/index', $data);
     }
 
-  
+//versi lama
     //    public function list()
     // {
     //     $keyword = $this->input->get('keyword');
@@ -117,7 +117,7 @@ public function list()
         $config['base_url'] = site_url('customer/list');
         $config['reuse_query_string'] = true;
         $config['total_rows'] = $total;
-        $config['per_page'] = 5;
+        $config['per_page'] = 8;
         $config['uri_segment'] = 3;
 
         $config['full_tag_open'] = '<nav><ul class="pagination mt-3">';

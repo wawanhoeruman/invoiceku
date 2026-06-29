@@ -270,35 +270,38 @@ class="btn btn-success btn-sm">
 <!-- JAVASCRIPT FIXED TOTAL ENTRIES -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    let activePageElement = document.querySelector('#pagination-wrapper .active, #pagination-wrapper strong, #pagination-wrapper .page-item.active a');
-    
-    let currentPage = 1;
-    if (activePageElement) {
-        let pageText = activePageElement.innerText.trim();
-        if (!isNaN(pageText) && pageText !== "") {
-            currentPage = parseInt(pageText);
-        }
-    }
-
-    let limit = 5;
-    let startNo = ((currentPage - 1) * limit) + 1;
+    // 1. Ambil offset database langsung dari Controller PHP yang dikirim Mas Wawan
+    let startNo = <?= isset($page) ? (int)$page : 0 ?>;
+    startNo = startNo + 1; // Ditambah 1 supaya halaman pertama dimulai dari angka 1 (bukan 0)
 
     let rows = document.querySelectorAll('.target-no');
+    // Jika tidak pakai class .target-no, otomatis cari kolom pertama di setiap baris tabel
+    if (rows.length === 0) {
+        rows = document.querySelectorAll('tbody tr td:first-child');
+    }
+    
+    // 2. Tulis nomor urut baris di tabel secara urut dan runtut
     rows.forEach(function(row, index) {
         row.innerText = startNo + index;
     });
 
-    // 🌟 Menghitung text showing dengan total data asli database secara dinamis
+    // 3. Ambil total data riil database (19) langsung dari Controller PHP
+    let totalEntries = <?= isset($total_rows) ? (int)$total_rows : 'null' ?>;
+    if (totalEntries === null || totalEntries === 0) {
+        totalEntries = rows.length; // Backup pengaman
+    }
+
+    // 4. Render teks "Showing X to Y of Z entries"
     let showingText = document.getElementById('showing-text');
+    if (!showingText) {
+        showingText = document.querySelector('.badge-dark, #pagination-wrapper span, .pagination-wrapper span');
+    }
+
     if (showingText && rows.length > 0) {
         let endNo = startNo + rows.length - 1;
         
-        // Mengambil total entries dari variabel PHP jika ada, kalau tidak ada kita ambil total baris real-time
-        let totalEntries = "<?= isset($total_rows) ? $total_rows : (isset($total) ? $total : '') ?>";
-        
-        // Backup jika di controller invoice variabelnya tidak dilempar, kita tembak pakai total hitungan row global
-        if(totalEntries === "") {
-            totalEntries = endNo; 
+        if (endNo > totalEntries) {
+            totalEntries = endNo;
         }
         
         showingText.innerText = "Showing " + startNo + " to " + endNo + " of " + totalEntries + " entries";

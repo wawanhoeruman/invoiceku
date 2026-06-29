@@ -48,7 +48,7 @@ public function index()
        CONFIG PAGINATION
     ========================== */
     $config['base_url'] = site_url('history/index');
-    $config['per_page'] = 10;
+    $config['per_page'] = 8;
     $config['reuse_query_string'] = true;
     $config['uri_segment'] = 3;
 
@@ -108,8 +108,15 @@ public function index()
     $this->db->order_by('logs.created_at','DESC');
     $this->db->limit($config['per_page'], $page);
 
+// ... baris query database logs atas tetap sama ...
+
     $data['logs'] = $this->db->get()->result();
     $data['pagination'] = $this->pagination->create_links();
+
+    // 🌟 TAMBAHKAN 3 BARIS INI BIAR DATA ASLINYA DIOPER KE VIEW
+    $data['total_rows'] = $config['total_rows'];
+    $data['per_page']   = $config['per_page'];
+    $data['page']       = $page;
 
     $data['keyword'] = $keyword;
     $data['dari']    = $dari;

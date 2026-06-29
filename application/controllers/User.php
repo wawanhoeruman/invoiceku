@@ -52,7 +52,7 @@ public function list()
     // config pagination
     $config['base_url'] = site_url('user/list');
     $config['total_rows'] = $total;
-    $config['per_page'] = 5;
+    $config['per_page'] = 8;
     $config['uri_segment'] = 3;
 
     // style bootstrap (biar bagus)
@@ -83,6 +83,18 @@ public function list()
         $this->db->or_like('username', $keyword);
     }
 
+//     $data['users'] = $this->db
+//         ->limit($config['per_page'], $start)
+//         ->get('users')
+//         ->result();
+
+//     $data['pagination'] = $this->pagination->create_links();
+//     $data['keyword'] = $keyword;
+
+//     $this->load->view('user/index', $data);
+// }
+// ... bagian kode atas tetap sama ...
+
     $data['users'] = $this->db
         ->limit($config['per_page'], $start)
         ->get('users')
@@ -90,6 +102,7 @@ public function list()
 
     $data['pagination'] = $this->pagination->create_links();
     $data['keyword'] = $keyword;
+    $data['total_rows'] = $total; // 🌟 TAMBAHKAN BARIS INI BIAR DATA ASLINYA KIRIM KE VIEW
 
     $this->load->view('user/index', $data);
 }

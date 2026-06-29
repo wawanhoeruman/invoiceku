@@ -9,13 +9,72 @@
 
     <style>
         body{
+            /* Gradasi warna Langit Biru Cerah ke Awan Putih Bersih */
+            background: linear-gradient(180deg, #3b82f6 0%, #93c5fd 40%, #f8fafc 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-box{
+            margin-top: 0;
+            width: 100%;
+        }
+
+        /* Kotak login dibuat putih bersih dengan sudut melengkung halus dan shadow lembut */
+        .card{
+            border: none;
+            border-radius: 24px; /* Sudut lebih melengkung modern sesuai contoh gambar Mas */
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+            background: #ffffff !important;
+            padding: 10px;
+        }
+
+        .card-header{
+            background: white;
+            border: none;
+            text-align: center;
+            font-size: 26px;
+            font-weight: 800;
+            padding-top: 20px;
+            color: #1e293b; /* Warna teks judul lebih gelap tegas */
+        }
+
+        /* Tombol login dibuat Hitam/Charcoal Pekat persis seperti di gambar contoh */
+        .btn-primary {
+            background-color: #203668 !important;
+            border-color: #0f172a !important;
+            border-radius: 12px;
+            font-weight: bold;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1e293b !important;
+            border-color: #1e293b !important;
+            transform: translateY(-1px);
+        }
+
+        /* Teks tautan Forgot Password dibuat warna biru navy biar senada */
+        .text-center a {
+            color: #2563eb !important;
+            font-weight: 500;
+        }
+
+        /* Warna teks hak cipta bawah disesuaikan jadi abu-abu gelap agar kontras di area bawah yang putih */
+        .text-white {
+            color: #475569 !important;
+            font-weight: 500;
+        }
+        /* body{
             background: linear-gradient(135deg,#667eea,#764ba2);
             height:100vh;
         }
 
         .login-box{
             margin-top:80px;
-        }
+        } */
 
         .card{
             border:none;
@@ -60,7 +119,7 @@
                         } elseif(isset($mode) && $mode == 'change'){
                             echo 'Password Baru';
                         } else {
-                            echo 'Login Admin';
+                            echo 'Login Dengan Username';
                         }
                     ?>
                 </div>

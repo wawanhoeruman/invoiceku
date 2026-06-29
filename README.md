@@ -85,6 +85,11 @@ Features:
 ![Login](screenshots/login.png)
 
 ---
+### Login Page
+
+![Reset Password](screenshots/resetpsswd.png)
+
+---
 
 ### Dashboard
 

@@ -1,132 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Activity Log</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
-<div class="container mt-4">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+body{
+    background:#f8f9fa;
+}
+
+.table th{
+    background:#343a40;
+    color:#fff;
+    vertical-align:middle;
+}
+
+.table td{
+    vertical-align:middle;
+}
+
+.card{
+    border:none;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.form-control {
+    border-radius:8px;
+}
+</style>
+</head>
+
+<body class="p-4">
+
+<div class="container-fluid px-4">
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>🕘 Activity Log</h4>
-
-    <a href="<?= site_url('dashboard') ?>" class="btn btn-secondary btn-sm">
-        ← Dashboard
-    </a>
+    <div>
+        <h2 class="mb-0">Activity Log</h2>
+        <small class="text-muted">Jejak aktivitas dan log sistem</small>
+    </div>
+    <div>
+        <a href="<?= site_url('dashboard') ?>" class="btn btn-secondary btn-sm" style="min-width:120px; font-weight:600; border-radius:8px;">
+            ← Dashboard
+        </a>
+    </div>
 </div>
 
-<!-- FILTER -->
-<form method="get" class="card p-3 mb-3 shadow-sm">
+<div class="card mb-3">
+    <div class="card-body py-2"> <form method="get">
+            
+            <div class="form-row mb-1">
+                <div class="col-auto">
+                    <label class="font-weight-bold text-muted small mb-0">Dari Tanggal</label>
+                    <input type="date" name="dari" class="form-control form-control-sm" value="<?= $dari ?>" style="max-width: 160px;">
+                </div>
+                <div class="col-auto">
+                    <label class="font-weight-bold text-muted small mb-0">Sampai Tanggal</label>
+                    <input type="date" name="sampai" class="form-control form-control-sm" value="<?= $sampai ?>" style="max-width: 160px;">
+                </div>
+            </div>
 
-<div class="form-row">
+            <div class="form-row mb-2">
+                <div class="col-md-3">
+                    <label class="font-weight-bold text-muted small mb-0">Cari Aktivitas</label>
+                    <input type="text" name="keyword" class="form-control form-control-sm"
+                           placeholder="Search activity..."
+                           value="<?= $keyword ?>">
+                </div>
+            </div>
 
-<div class="col-md-3 mb-2">
-    <input type="text" name="keyword" class="form-control"
-    placeholder="Search activity..."
-    value="<?= $keyword ?>">
+            <div class="form-row">
+                <div class="col-md-3 d-flex">
+                    <button type="submit" class="btn btn-primary btn-sm mr-2 w-50" style="font-weight:600; border-radius:8px; height: 32px;">
+                        Filter
+                    </button>
+                    <a href="<?= site_url('history') ?>" class="btn btn-secondary btn-sm w-50" style="line-height:20px; font-weight:600; border-radius:8px; height: 32px;">
+                        🔄 Reset
+                    </a>
+                </div>
+            </div>
+
+        </form>
+    </div>
 </div>
 
-<div class="col-md-3 mb-2">
-    <input type="date" name="dari" class="form-control"
-    value="<?= $dari ?>">
-</div>
-
-<div class="col-md-3 mb-2">
-    <input type="date" name="sampai" class="form-control"
-    value="<?= $sampai ?>">
-</div>
-
-<div class="col-md-3 mb-2 d-flex">
-
-    <button class="btn btn-primary mr-2 w-50">
-        Filter
-    </button>
-
-    <a href="<?= site_url('history') ?>"
-       class="btn btn-secondary w-50">
-       🔄 Reset
-    </a>
-
-</div>
-
-</div>
-
-</form>
-
-<!-- TABLE -->
-<div class="card shadow-sm">
-
+<div class="card">
 <div class="card-body p-0">
 
-<table class="table table-hover mb-0">
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered mb-0">
+            <thead>
+                <tr>
+                    <th width="60">No</th>
+                    <th width="15%">Waktu</th>
+                    <th width="15%">User</th>
+                    <th width="15%">Aktivitas</th>
+                    <th>Deskripsi</th>
+                    <th width="12%">IP</th>
+                    <th width="10%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php if(empty($logs)): ?>
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">Tidak ada data log</td>
+                </tr>
+            <?php endif; ?>
 
-<thead class="thead-dark">
-<tr>
-    <th>Waktu</th>
-    <th>User</th>
-    <th>Aktivitas</th>
-    <th>Deskripsi</th>
-    <th>IP</th>
-    <th>Aksi</th>
-</tr>
-</thead>
+            <?php foreach($logs as $log): ?>
+                <?php
+                $color = 'secondary';
+                if($log->activity == 'CREATE_CUSTOMER') $color = 'success';
+                if($log->activity == 'DELETE_CUSTOMER') $color = 'danger';
+                if($log->activity == 'UPDATE_CUSTOMER') $color = 'warning';
+                if($log->activity == 'CREATE_INVOICE')  $color = 'primary';
+                if($log->activity == 'PAID_INVOICE')    $color = 'dark';
+                ?>
+                <tr>
+                    <td class="target-no">1</td>
+                    <td><?= date('d M Y H:i', strtotime($log->created_at)) ?></td>
+                    <td><strong><?= $log->user_nama ? $log->user_nama : '-' ?></strong></td>
+                    <td>
+                        <span class="badge badge-<?= $color ?> p-2 btn-block text-center" style="font-size:11px;">
+                            <?= $log->activity ?>
+                        </span>
+                    </td>
+                    <td><?= $log->description ?></td>
+                    <td><code class="text-dark"><?= $log->ip_address ?></code></td>
+                    <td>
+                        <a href="<?= site_url('history/hapus/'.$log->id) ?>"
+                           class="btn btn-sm btn-danger btn-block"
+                           onclick="return confirm('Yakin hapus log ini?')">
+                           Hapus
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
-<tbody>
-
-<?php if(empty($logs)): ?>
-<tr>
-    <td colspan="4" class="text-center text-muted">
-        Tidak ada data
-    </td>
-</tr>
-<?php endif; ?>
-
-<?php foreach($logs as $log): ?>
-
-<?php
-$color = 'secondary';
-
-if($log->activity == 'CREATE_CUSTOMER') $color = 'success';
-if($log->activity == 'DELETE_CUSTOMER') $color = 'danger';
-if($log->activity == 'UPDATE_CUSTOMER') $color = 'warning';
-if($log->activity == 'CREATE_INVOICE')  $color = 'primary';
-if($log->activity == 'PAID_INVOICE')    $color = 'dark';
-?>
-
-<tr>
-<td><?= date('d M Y H:i', strtotime($log->created_at)) ?></td>
-
-<td>
-    <?= $log->user_nama ? $log->user_nama : '-' ?>
-</td>
-
-<td>
-<span class="badge badge-<?= $color ?>">
-<?= $log->activity ?>
-</span>
-</td>
-
-<td><?= $log->description ?></td>
-<td><?= $log->ip_address ?></td>
-
-<td>
-    <a href="<?= site_url('history/hapus/'.$log->id) ?>"
-       class="btn btn-sm btn-danger"
-       onclick="return confirm('Yakin hapus log ini?')">
-       Hapus
-    </a>
-</td>
-
-</tr>
-
-<?php endforeach; ?>
-
-</tbody>
-
-<div class="text-muted mb-2">
-    Menampilkan <?= count($logs) ?> data
-</div>
-
-</table>
-<?= $pagination ?>
+    <div class="d-flex justify-content-between align-items-center p-3">
+        <div class="d-flex align-items-center" id="pagination-wrapper">
+            <div class="mr-3">
+                <?= $pagination ?>
+            </div>
+            <span class="badge badge-dark p-2" id="showing-text" style="font-size: 13px; font-weight: normal; border-radius: 4px;">
+                Showing 0 to 0 entries
+            </span>
+        </div>
+    </div>
 
 </div>
 </div>
 
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Ambil offset database langsung dari Controller PHP yang dikirim Mas Wawan
+    let startNo = <?= isset($page) ? (int)$page : 0 ?>;
+    startNo = startNo + 1; // Ditambah 1 supaya halaman pertama dimulai dari angka 1
+
+    let rows = document.querySelectorAll('.target-no');
+    // Jika tidak memakai class .target-no, otomatis cari kolom pertama di setiap baris tabel
+    if (rows.length === 0) {
+        rows = document.querySelectorAll('tbody tr td:first-child');
+    }
+    
+    // 2. Set nomor urut baris di tabel (Pasti runtut & presisi!)
+    rows.forEach(function(row, index) {
+        row.innerText = startNo + index;
+    });
+
+    // 3. Ambil total data riil database langsung dari Controller PHP
+    let totalEntries = <?= isset($total_rows) ? (int)$total_rows : 'null' ?>;
+    if (totalEntries === null || totalEntries === 0) {
+        totalEntries = rows.length; // Backup pengaman
+    }
+
+    // 4. Render teks "Showing X to Y of Z entries"
+    let showingText = document.getElementById('showing-text');
+    if (!showingText) {
+        showingText = document.querySelector('.badge-dark, #pagination-wrapper span, .pagination-wrapper span');
+    }
+
+    if (showingText && rows.length > 0) {
+        let endNo = startNo + rows.length - 1;
+        
+        if (endNo > totalEntries) {
+            totalEntries = endNo;
+        }
+        
+        showingText.innerText = "Showing " + startNo + " to " + endNo + " of " + totalEntries + " entries";
+    }
+});
+</script>
+
+</body>
+</html>
