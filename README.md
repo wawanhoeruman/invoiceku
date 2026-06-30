@@ -13,6 +13,7 @@ Modern Invoice Management Web Application built with CodeIgniter 3.
 
 ### Authentication
 - Login system
+- Forgot / Reset Password
 - Logout
 - Session management
 
@@ -85,7 +86,7 @@ Features:
 ![Login](screenshots/login.png)
 
 ---
----
+
 ### Reset Password
 
 ![Reset Password](screenshots/resetpsswd.png)   
@@ -157,9 +158,21 @@ Features:
 
 ---
 
-### Invoice PDF
+### Unpaid Invoice PDF
 
-![Invoice PDF](screenshots/invoice-pdf.png)
+![Unpaid Invoice PDF](screenshots/unpaid-invoice-pdf.png)
+
+---
+
+### Paid Invoice PDF
+
+![Paid Invoice PDF](screenshots/paid-invoice-pdf.png)
+
+---
+
+### Overdue Invoice PDF
+
+![Overdue Invoice PDF](screenshots/overdue-invoice-pdf.png)
 
 ---
 

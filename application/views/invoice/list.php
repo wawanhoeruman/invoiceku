@@ -19,7 +19,8 @@ body{
 }
 
 .table th{
-    background:#343a40;
+    /* background:#343a40; */
+    background: #3899e4;
     color:white;
     vertical-align:middle;
 }

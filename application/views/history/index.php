@@ -18,7 +18,8 @@ body{
 }
 
 .table th{
-    background:#343a40;
+    /* background:#343a40; */
+    background: #3899e4;
     color:#fff;
     vertical-align:middle;
 }
@@ -111,40 +112,45 @@ body{
             </thead>
             <tbody>
             <?php if(empty($logs)): ?>
-                <tr>
-                    <td colspan="7" class="text-center text-muted py-4">Tidak ada data log</td>
+                <!-- JIKA DATA KOSONG / TIDAK DITEMUKAN (VERSI RAMPING & ESTETIK) -->
+                <tr class="no-data-row">
+                    <td colspan="7" class="text-center text-muted py-3 small font-weight-bold">
+                        <i class="fas fa-search mr-2 text-secondary"></i>
+                        Data aktivitas tidak ditemukan.
+                    </td>
                 </tr>
+            <?php else: ?>
+                <!-- JIKA DATA ADA, BARU DI-FOREACH -->
+                <?php foreach($logs as $log): ?>
+                    <?php
+                    $color = 'secondary';
+                    if($log->activity == 'CREATE_CUSTOMER') $color = 'success';
+                    if($log->activity == 'DELETE_CUSTOMER') $color = 'danger';
+                    if($log->activity == 'UPDATE_CUSTOMER') $color = 'warning';
+                    if($log->activity == 'CREATE_INVOICE')  $color = 'primary';
+                    if($log->activity == 'PAID_INVOICE')    $color = 'dark';
+                    ?>
+                    <tr>
+                        <td class="target-no">1</td>
+                        <td><?= date('d M Y H:i', strtotime($log->created_at)) ?></td>
+                        <td><strong><?= $log->user_nama ? $log->user_nama : '-' ?></strong></td>
+                        <td>
+                            <span class="badge badge-<?= $color ?> p-2 btn-block text-center" style="font-size:11px;">
+                                <?= $log->activity ?>
+                            </span>
+                        </td>
+                        <td><?= $log->description ?></td>
+                        <td><code class="text-dark"><?= $log->ip_address ?></code></td>
+                        <td>
+                            <a href="<?= site_url('history/hapus/'.$log->id) ?>"
+                               class="btn btn-sm btn-danger btn-block"
+                               onclick="return confirm('Yakin hapus log ini?')">
+                               Hapus
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             <?php endif; ?>
-
-            <?php foreach($logs as $log): ?>
-                <?php
-                $color = 'secondary';
-                if($log->activity == 'CREATE_CUSTOMER') $color = 'success';
-                if($log->activity == 'DELETE_CUSTOMER') $color = 'danger';
-                if($log->activity == 'UPDATE_CUSTOMER') $color = 'warning';
-                if($log->activity == 'CREATE_INVOICE')  $color = 'primary';
-                if($log->activity == 'PAID_INVOICE')    $color = 'dark';
-                ?>
-                <tr>
-                    <td class="target-no">1</td>
-                    <td><?= date('d M Y H:i', strtotime($log->created_at)) ?></td>
-                    <td><strong><?= $log->user_nama ? $log->user_nama : '-' ?></strong></td>
-                    <td>
-                        <span class="badge badge-<?= $color ?> p-2 btn-block text-center" style="font-size:11px;">
-                            <?= $log->activity ?>
-                        </span>
-                    </td>
-                    <td><?= $log->description ?></td>
-                    <td><code class="text-dark"><?= $log->ip_address ?></code></td>
-                    <td>
-                        <a href="<?= site_url('history/hapus/'.$log->id) ?>"
-                           class="btn btn-sm btn-danger btn-block"
-                           onclick="return confirm('Yakin hapus log ini?')">
-                           Hapus
-                        </a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
@@ -167,6 +173,15 @@ body{
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    // JIKA YANG MUNCUL ADALAH PESAN "TIDAK ADA DATA LOG", AMANKAN TEKS DAN STOP SCRIPT
+    if (document.querySelector('.no-data-row')) {
+        let showingText = document.getElementById('showing-text');
+        if (showingText) {
+            showingText.innerText = "Showing 0 to 0 of 0 entries";
+        }
+        return; 
+    }
+
     // 1. Ambil offset database langsung dari Controller PHP yang dikirim Mas Wawan
     let startNo = <?= isset($page) ? (int)$page : 0 ?>;
     startNo = startNo + 1; // Ditambah 1 supaya halaman pertama dimulai dari angka 1

@@ -18,7 +18,7 @@ body{
 }
 
 .table th{
-    background:#343a40;
+    background: #3899e4;
     color:white;
     vertical-align:middle;
 }
@@ -130,7 +130,7 @@ body{
         <?php endforeach; ?>
     <?php else: ?>
         <tr>
-            <td colspan="6" class="text-center text-muted py-4">Belum ada data user</td>
+            <td colspan="6" class="text-center text-muted py-4">User Tidak Terdaftar</td>
         </tr>
     <?php endif; ?>
     </tbody>
