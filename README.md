@@ -159,21 +159,22 @@ Features:
 ---
 
 <!-- ### Invoice PDF Unpaid
-
 ![Unpaid Invoice PDF](screenshots/unpaid-invoice-pdf.png) -->
-### Invoice PDF ![Unpaid](https://img.shields.io/badge/UNPAID-red)
+### Invoice PDF ![Unpaid](https://img.shields.io/badge/UNPAID-orange)
 ![Unpaid Invoice PDF](screenshots/unpaid-invoice-pdf.png)
 
 ---
 
-### Invoice PDF Paid
-
-![Invoice PDF Paid](screenshots/paid-invoice-pdf.png)
+<!-- ### Invoice PDF Paid
+![Invoice PDF Paid](screenshots/paid-invoice-pdf.png) -->
+### Invoice PDF ![Paid](https://img.shields.io/badge/PAID-green)
+![Paid Invoice PDF](screenshots/paid-invoice-pdf.png)
 
 ---
 
-### Overdue Invoice PDF
-
+<!-- ### Overdue Invoice PDF
+![Overdue Invoice PDF](screenshots/overdue-invoice-pdf.png) -->
+### Invoice PDF ![Overdue](https://img.shields.io/badge/OVERDUE-red)
 ![Overdue Invoice PDF](screenshots/overdue-invoice-pdf.png)
 
 ---
