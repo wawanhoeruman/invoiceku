@@ -152,21 +152,23 @@ Features:
 
 ---
 
-### Invoice Detail Create
+### Invoice Detail Item Create
 
 ![Invoice Detail](screenshots/invoice-detail.png)
 
 ---
 
-### Unpaid Invoice PDF
+<!-- ### Invoice PDF Unpaid
 
+![Unpaid Invoice PDF](screenshots/unpaid-invoice-pdf.png) -->
+### Invoice PDF Unpaid ![Unpaid](https://img.shields.io/badge/UNPAID-red)
 ![Unpaid Invoice PDF](screenshots/unpaid-invoice-pdf.png)
 
 ---
 
-### Paid Invoice PDF
+### Invoice PDF Paid
 
-![Paid Invoice PDF](screenshots/paid-invoice-pdf.png)
+![Invoice PDF Paid](screenshots/paid-invoice-pdf.png)
 
 ---
 
