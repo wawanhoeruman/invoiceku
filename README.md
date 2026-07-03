@@ -161,7 +161,7 @@ Features:
 <!-- ### Invoice PDF Unpaid
 
 ![Unpaid Invoice PDF](screenshots/unpaid-invoice-pdf.png) -->
-### Invoice PDF Unpaid ![Unpaid](https://img.shields.io/badge/UNPAID-red)
+### Invoice PDF ![Unpaid](https://img.shields.io/badge/UNPAID-red)
 ![Unpaid Invoice PDF](screenshots/unpaid-invoice-pdf.png)
 
 ---
